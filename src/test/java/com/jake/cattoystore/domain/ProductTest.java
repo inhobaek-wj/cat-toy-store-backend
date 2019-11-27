@@ -8,13 +8,14 @@ public class ProductTest {
 
     @Test
     public void createProduct() {
-        Product product = new Product();
-        product.setName("airforce");
-        product.setMaker("nike");
-        product.setPrice(3000);
+        Product product = Product.builder()
+            .name("airforce")
+            .maker("nike")
+            .price(3000)
+            .build();
 
         assertThat(product.getName()).isEqualTo("airforce");
         assertThat(product.getMaker()).isEqualTo("nike");
-        assertThat(product.getPrice()).isEqualTo(4000);
+        assertThat(product.getPrice()).isEqualTo(3000);
     }
 }
