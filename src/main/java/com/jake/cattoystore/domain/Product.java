@@ -1,5 +1,7 @@
 package com.jake.cattoystore.domain;
 
+import java.text.NumberFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +20,13 @@ public class Product {
     @Getter
     private String maker;
 
-    @Getter
     private Integer price;
+
+    // second, I create function to avoid syntax error.
+    public String getPriceWithComma() {
+        // return null;
+
+        // third, implement what really works.
+        return NumberFormat.getInstance().format(price);
+    }
 }

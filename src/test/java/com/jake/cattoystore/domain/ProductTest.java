@@ -16,7 +16,9 @@ public class ProductTest {
 
         assertThat(product.getName()).isEqualTo("airforce");
         assertThat(product.getMaker()).isEqualTo("nike");
-        assertThat(product.getPrice()).isEqualTo("3,000");
+
+        // first, make test what I need.
+        assertThat(product.getPriceWithComma()).isEqualTo("3,000");
     }
 
 }
