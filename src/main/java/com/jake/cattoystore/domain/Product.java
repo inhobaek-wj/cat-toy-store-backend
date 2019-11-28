@@ -22,6 +22,9 @@ public class Product {
 
     private Integer price;
 
+    @Getter
+    private String imageUrl;
+
     // second, I create function to avoid syntax error.
     public String getPriceWithComma() {
         // return null;
