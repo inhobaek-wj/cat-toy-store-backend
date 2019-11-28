@@ -37,6 +37,6 @@ public class Product {
     }
 
     public void changeImageUrl(String newImageUrl) {
-
+        this.imageUrl = newImageUrl;
     }
 }
