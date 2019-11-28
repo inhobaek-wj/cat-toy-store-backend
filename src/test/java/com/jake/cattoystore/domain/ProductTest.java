@@ -16,6 +16,7 @@ public class ProductTest {
 
         assertThat(product.getName()).isEqualTo("airforce");
         assertThat(product.getMaker()).isEqualTo("nike");
-        assertThat(product.getPrice()).isEqualTo(3000);
+        assertThat(product.getPrice()).isEqualTo("3,000");
     }
+
 }
