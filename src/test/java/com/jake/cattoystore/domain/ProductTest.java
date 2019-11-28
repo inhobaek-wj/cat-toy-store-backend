@@ -34,4 +34,13 @@ public class ProductTest {
     public void defaultImage() {
         assertThat(product.getImageUrl()).isEqualTo("");
     }
+
+    @Test
+    public void changeImage() {
+        String newImageUrl = "newImageUrl";
+
+        product.changeImageUrl(newImageUrl);
+
+        assertThat(product.getImageUrl()).isEqualTo(newImageUrl);
+    }
 }

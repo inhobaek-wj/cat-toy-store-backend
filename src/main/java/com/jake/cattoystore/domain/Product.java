@@ -35,4 +35,8 @@ public class Product {
         // third, implement what really works.
         return NumberFormat.getInstance().format(price);
     }
+
+    public void changeImageUrl(String newImageUrl) {
+
+    }
 }
