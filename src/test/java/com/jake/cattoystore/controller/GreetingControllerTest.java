@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 // import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(SpringExtension.class) // junit5 @RunWith(SpringRunner.class)
 @WebMvcTest(GreetingController.class)
 public class GreetingControllerTest {
 
@@ -27,5 +27,12 @@ public class GreetingControllerTest {
         mockMvc.perform(get("/hello"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("Hello")));
+    }
+
+    @Test
+    public void helloWithName() {
+        mockMvc.perform(get("/hello")).param("name", "jake")
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("Hello, jake")));
     }
 }
