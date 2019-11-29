@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,6 +43,9 @@ public class GreetingControllerTest {
         mockMvc.perform(get("/hello"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("Hello")));
+
+        // check if getMessage method is called with verify.
+        verify(greetingService).getMessage(null);
     }
 
     @Test
@@ -49,5 +53,7 @@ public class GreetingControllerTest {
         mockMvc.perform(get("/hello").param("name", "jake"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("Hello, jake")));
+
+        verify(greetingService).getMessage("jake");
     }
 }
