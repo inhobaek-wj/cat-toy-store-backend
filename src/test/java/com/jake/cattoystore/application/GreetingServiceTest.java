@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.jake.cattoystore.application.GreetingService;
+
 public class GreetingServiceTest {
 
 
@@ -18,6 +20,12 @@ public class GreetingServiceTest {
 
     @Test
     public void getMessage() {
-        assertThat(greetingService.getMessage()).isEqualTo("Hello");
+        assertThat(greetingService.getMessage(null)).isEqualTo("Hello");
+    }
+
+    @Test
+    public void getMessageWithName() {
+        assertThat(greetingService.getMessage("jake"))
+            .isEqualTo("Hello, jake");
     }
 }

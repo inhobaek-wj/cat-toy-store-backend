@@ -3,7 +3,10 @@ package com.jake.cattoystore.application;
 
 public class GreetingService {
 
-    public String getMessage() {
-        return "Hello";
+    public String getMessage(String name) {
+        if (name == null) {
+            return "Hello";
+        }
+        return "Hello, " + name;
     }
 }
