@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,12 +23,19 @@ import static org.hamcrest.CoreMatchers.containsString;
 @WebMvcTest(GreetingController.class)
 public class GreetingControllerTest {
 
-    // when test controller, you need mock object
     @Autowired
     private MockMvc mockMvc;
 
-    @SpyBean
+    // when test controller, you need mock object
+    @MockBean
     private GreetingService greetingService;
+
+    @BeforeEach
+    public void mockGreetingService() {
+        given(greetingService.getMessage(null)).willReturn("Hello");
+
+        given(greetingService.getMessage("jake")).willReturn("Hello, jake");
+    }
 
     @Test
     public void hello() throws Exception {
