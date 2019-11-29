@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.CoreMatchers.containsString;
 
-// import static org.assertj.core.api.Assertions.assertThat;
+// it takes a little bit long to test controller.
 
 @ExtendWith(SpringExtension.class) // junit5 @RunWith(SpringRunner.class)
 @WebMvcTest(GreetingController.class)
@@ -30,8 +30,8 @@ public class GreetingControllerTest {
     }
 
     @Test
-    public void helloWithName() {
-        mockMvc.perform(get("/hello")).param("name", "jake")
+    public void helloWithName() throws Exception {
+        mockMvc.perform(get("/hello").param("name", "jake"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("Hello, jake")));
     }
