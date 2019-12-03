@@ -2,6 +2,7 @@ package com.jake.cattoystore.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -34,7 +35,7 @@ public class ProductService {
     }
 
     public Product getProduct(Long id) {
-        return null;
+        return productRepository.findById(id).get();
     }
 
 }

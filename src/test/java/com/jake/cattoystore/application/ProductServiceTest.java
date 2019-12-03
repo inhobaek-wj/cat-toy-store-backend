@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.jake.cattoystore.application.ProductService;
 import com.jake.cattoystore.domain.Product;
@@ -77,6 +78,22 @@ public class ProductServiceTest {
         productService.removeProduct(13L);
 
         verify(productRepository).deleteById(13L);
+    }
+
+    @Test
+    public void getProduct() {
+        Product product = Product.builder()
+            .name("airforce")
+            .maker("NIKE")
+            .price(50000)
+            .build();
+
+        given(productRepository.findById(13L))
+            .willReturn(Optional.of(product));
+
+        assertThat(productService.getProduct(13L)).isEqualTo(product);
+
+        verify(productRepository).findById(13L);
     }
 
 }
