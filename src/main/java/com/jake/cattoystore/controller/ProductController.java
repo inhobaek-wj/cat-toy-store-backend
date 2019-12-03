@@ -51,11 +51,7 @@ public class ProductController {
                                     @RequestBody ProductDto productDto)
         throws URISyntaxException {
 
-        String name = productDto.getName();
-        String maker = productDto.getMaker();
-        Integer price = productDto.getPrice();
-
-        productService.addProduct(name, maker, price);
+        productService.addProduct(mapper.map(productDto, Product.class));
 
         URI location = new URI("/products/1004");
 

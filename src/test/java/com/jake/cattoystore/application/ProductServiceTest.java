@@ -46,7 +46,15 @@ public class ProductServiceTest {
 
     @Test
     public void addProduct() {
-        productService.addProduct("airforce", "NIKE", 50000);
+        // productService.addProduct("airforce", "NIKE", 50000);
+
+        Product product = Product.builder()
+            .name("airforce")
+            .maker("NIKE")
+            .price(50000)
+            .build();
+
+        productService.addProduct(product);
 
         // assertThat(productService.getProducts()).isNotEmpty();
 

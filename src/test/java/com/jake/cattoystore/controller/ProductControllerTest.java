@@ -75,6 +75,8 @@ public class ProductControllerTest {
             .andExpect(status().isCreated());
 
         // verify if a product is added in the real controller.
-        verify(productService).addProduct("airforce", "NIKE", 50000);
+        // verify(productService).addProduct("airforce", "NIKE", 50000);
+
+        verify(productService).addProduct(any(Product.class));
     }
 }
