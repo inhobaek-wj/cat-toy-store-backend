@@ -72,4 +72,11 @@ public class ProductServiceTest {
 
     }
 
+    @Test
+    public void removeProduct() {
+        productService.removeProduct(13L);
+
+        verify(productRepository).deleteById(13L);
+    }
+
 }

@@ -30,6 +30,7 @@ public class ProductService {
     }
 
     public void removeProduct(Long id) {
+        productRepository.deleteById(id);
     }
 
 }
