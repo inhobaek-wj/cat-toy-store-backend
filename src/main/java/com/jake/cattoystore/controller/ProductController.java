@@ -47,6 +47,11 @@ public class ProductController {
 
     @PostMapping("/products")
     public ResponseEntity<?> create() throws URISyntaxException {
+        String name = "airforce";
+        String maker = "NIKE";
+        Integer price = 50000;
+        productService.addProduct(name, maker, price);
+
         URI location = new URI("/products/1004");
 
         return ResponseEntity.created(location).build();
