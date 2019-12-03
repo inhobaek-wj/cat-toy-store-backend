@@ -5,20 +5,27 @@ import java.util.List;
 
 import com.jake.cattoystore.domain.Greeting;
 import com.jake.cattoystore.domain.Product;
+import com.jake.cattoystore.domain.ProductRepository;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
 
-    List<Product> products = new ArrayList<>();
+    private ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public List<Product> getProducts() {
-        return new ArrayList<>(this.products);
+        return productRepository.findAll();
     }
 
     public void addProduct(String name) {
-        products.add(Product.builder().name(name).build());
+        Product product = Product.builder().name(name).build();
+
+        productRepository.save(product);
     }
 
 }
