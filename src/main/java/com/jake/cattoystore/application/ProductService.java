@@ -29,4 +29,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public void removeProduct(Long id) {
+    }
+
 }

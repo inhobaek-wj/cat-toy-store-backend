@@ -13,7 +13,9 @@ import com.jake.cattoystore.dto.ProductDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,6 +60,14 @@ public class ProductController {
         URI location = new URI("/products/" + product.getId());
 
         return ResponseEntity.created(location).build();
+    }
+
+
+    @DeleteMapping("/products/{id}")
+    public void destroy(
+                        @PathVariable("id") Long id) {
+
+        productService.removeProduct(id);
     }
 
 }

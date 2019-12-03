@@ -16,6 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
@@ -83,4 +84,14 @@ public class ProductControllerTest {
 
         verify(productService).addProduct(any(Product.class));
     }
+
+    @Test
+    public void destroy() throws Exception {
+        mockMvc.perform(delete("/products/13"))
+            .andExpect(status().isOk());
+
+        // => Wanted but not invoked:
+        verify(productService).removeProduct(13L);
+    }
+
 }
