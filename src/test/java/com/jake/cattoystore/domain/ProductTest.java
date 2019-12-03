@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
+import com.jake.cattoystore.dto.ProductDto;
+
 public class ProductTest {
 
 
@@ -42,5 +46,20 @@ public class ProductTest {
         product.changeImageUrl(newImageUrl);
 
         assertThat(product.getImageUrl()).isEqualTo(newImageUrl);
+    }
+
+    @Test
+    public void mapFromDTO() {
+        Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+
+        ProductDto productDto = new ProductDto();
+        productDto.setName("airforce");
+
+        // apply dozermapper.
+        // DTO -> domain model.
+        // in order to this, you need to @Mapping anotaion in Dto class.
+        Product product = mapper.map(productDto, Product.class);
+
+        assertThat(product.getName()).isEqualTo("airforce");
     }
 }

@@ -34,6 +34,7 @@ public class ProductController {
         //     }).collect(Collectors.toList());
 
         // apply dozermapper.
+        // Domain model -> DTO mapping.
         return products.stream()
             .map(product -> mapper.map(product, ProductDto.class))
             .collect(Collectors.toList());
