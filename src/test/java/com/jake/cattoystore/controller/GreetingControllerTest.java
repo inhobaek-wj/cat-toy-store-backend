@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.BDDMockito.given;
@@ -22,6 +23,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 @ExtendWith(SpringExtension.class) // junit5 <- @RunWith(SpringRunner.class)
 @WebMvcTest(GreetingController.class)
+@ActiveProfiles("myTest")
 public class GreetingControllerTest {
 
     // MockMvc object is injected by Spring IoC Container.
