@@ -20,10 +20,11 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 // it takes a little bit long to test controller.
 
-@ExtendWith(SpringExtension.class) // junit5 @RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class) // junit5 <- @RunWith(SpringRunner.class)
 @WebMvcTest(GreetingController.class)
 public class GreetingControllerTest {
 
+    // MockMvc object is injected by Spring IoC Container.
     @Autowired
     private MockMvc mockMvc;
 
