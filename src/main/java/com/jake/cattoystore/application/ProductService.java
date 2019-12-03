@@ -33,4 +33,8 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public Product getProduct(Long id) {
+        return null;
+    }
+
 }

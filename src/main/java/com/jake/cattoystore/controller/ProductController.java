@@ -62,7 +62,6 @@ public class ProductController {
         return ResponseEntity.created(location).build();
     }
 
-
     @DeleteMapping("/products/{id}")
     public void destroy(
                         @PathVariable("id") Long id
@@ -71,4 +70,11 @@ public class ProductController {
         productService.removeProduct(id);
     }
 
+    @GetMapping("/products/{id}")
+    public ProductDto detail(
+                             @PathVariable("id") Long id
+                             ) {
+        Product product = productService.getProduct(id);
+        return mapper.map(product, ProductDto.class);
+    }
 }

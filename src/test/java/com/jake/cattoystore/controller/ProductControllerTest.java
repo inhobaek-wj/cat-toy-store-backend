@@ -94,4 +94,23 @@ public class ProductControllerTest {
         verify(productService).removeProduct(13L);
     }
 
+
+    @Test
+    public void detail() throws Exception {
+
+        Product product = Product.builder()
+            .name("airforce")
+            .maker("NIKE")
+            .price(50000)
+            .build();
+
+        given(productService.getProduct(13L)).willReturn(product);
+
+        mockMvc.perform(get("/products/13"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("airforce")));
+
+        verify(productService).getProduct(13L);
+    }
+
 }
