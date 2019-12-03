@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,4 +78,35 @@ public class ProductController {
         Product product = productService.getProduct(id);
         return mapper.map(product, ProductDto.class);
     }
+
+    @PatchMapping("/products/{id}")
+    public void update(
+                       @PathVariable("id") Long id,
+                       @RequestBody ProductDto productDto
+                       ) {
+        // these codes invoke error like
+
+        //   JUnit Jupiter:ProductControllerTest:update()
+        //     MethodSource [className = 'com.jake.cattoystore.controller.ProductControllerTest', methodName = 'update', methodParameterTypes = '']
+        //     => Argument(s) are different! Wanted:
+        // com.jake.cattoystore.application.ProductService#0 bean.updateProduct(
+        //     13L,
+        //     com.jake.cattoystore.domain.Product@36510e73
+        // );
+        // -> at com.jake.cattoystore.controller.ProductControllerTest.update(ProductControllerTest.java:136)
+        // Actual invocations have different arguments:
+        // com.jake.cattoystore.application.ProductService#0 bean.updateProduct(
+        //     13L,
+        //     com.jake.cattoystore.domain.Product@374ccb9
+        // );
+        // -> at com.jake.cattoystore.controller.ProductController.update(ProductController.java:87)
+        // com.jake.cattoystore.controller.ProductControllerTest.update(ProductControllerTest.java:136)
+        // java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+
+        // productService.updateProduct(id,
+        //                              mapper.map(productDto, Product.class));
+
+        productService.updateProduct(id, productDto);
+    }
+
 }

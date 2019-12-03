@@ -12,11 +12,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import java.util.List;
 
 import com.jake.cattoystore.application.ProductService;
 import com.jake.cattoystore.domain.Product;
+import com.jake.cattoystore.dto.ProductDto;
 
 import static org.hamcrest.CoreMatchers.containsString;
 
@@ -113,4 +117,22 @@ public class ProductControllerTest {
         verify(productService).getProduct(13L);
     }
 
+
+    @Test
+    public void update() throws Exception {
+        mockMvc.perform(
+                        patch("/products/13")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"jordan\",\"maker\":\"NIKE\", \"price\":100000}")
+                        )
+            .andExpect(status().isOk());
+
+        ProductDto productDto = ProductDto.builder()
+            .name("jordan")
+            .maker("NIKE")
+            .price(100000)
+            .build();
+
+        verify(productService).updateProduct(13L, productDto);
+    }
 }

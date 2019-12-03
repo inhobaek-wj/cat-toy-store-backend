@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.jake.cattoystore.domain.Greeting;
 import com.jake.cattoystore.domain.Product;
 import com.jake.cattoystore.domain.ProductRepository;
+import com.jake.cattoystore.dto.ProductDto;
 
 import org.springframework.stereotype.Service;
 
@@ -38,4 +38,7 @@ public class ProductService {
         return productRepository.findById(id).get();
     }
 
+    public Product updateProduct(Long id, ProductDto productDto) {
+        return null;
+    }
 }
