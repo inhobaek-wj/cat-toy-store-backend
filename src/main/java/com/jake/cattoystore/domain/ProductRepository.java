@@ -2,17 +2,12 @@ package com.jake.cattoystore.domain;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface ProductRepository extends JpaRepository<Product,Long> {
 
-@Repository
-public class ProductRepository {
+    List<Product> findAll();
 
-    public List<Product> findAll() {
-        return null;
-    }
+    Product save(Product product);
 
-    public Product save(Product any) {
-        return null;
-    }
 }
