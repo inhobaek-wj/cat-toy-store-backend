@@ -16,8 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +66,17 @@ public class ProductControllerTest {
         // mockMvc.perform(post("/products"))
         //     .andExpect(status().isCreated());
 
+        Product product = Product.builder().id(13L).build();
+
+        given(productService.addProduct(any())).willReturn(product);
+
         mockMvc.perform(
                         post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name:\":\"airforce\",\"maker\":\"NIKE\", \"price\":50000}")
                         )
-            .andExpect(status().isCreated());
+            .andExpect(status().isCreated())
+            .andExpect(header().string("location", "/products/13"));
 
         // verify if a product is added in the real controller.
         // verify(productService).addProduct("airforce", "NIKE", 50000);
