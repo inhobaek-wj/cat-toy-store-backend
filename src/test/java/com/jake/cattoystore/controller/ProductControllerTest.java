@@ -78,7 +78,7 @@ public class ProductControllerTest {
         mockMvc.perform(
                         post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name:\":\"airforce\",\"maker\":\"NIKE\", \"price\":50000}")
+                        .content("{\"name\":\"airforce\",\"maker\":\"NIKE\", \"price\":50000}")
                         )
             .andExpect(status().isCreated())
             .andExpect(header().string("location", "/products/13"));
