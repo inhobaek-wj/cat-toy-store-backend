@@ -67,7 +67,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void create() throws Exception {
+    public void createWithValidAttributes() throws Exception {
         // mockMvc.perform(post("/products"))
         //     .andExpect(status().isCreated());
 
@@ -87,6 +87,21 @@ public class ProductControllerTest {
         // verify(productService).addProduct("airforce", "NIKE", 50000);
 
         verify(productService).addProduct(any(Product.class));
+    }
+
+    @Test
+    public void createWithInvalidAttributes() throws Exception {
+        // this test failed as NullPointer
+        // when I put @Valid anotation into the controller
+        // and didn't set vaildation anotation into dto object.
+
+        mockMvc.perform(
+                        post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\" \",\"maker\":\"NIKE\", \"price\":50000}")
+                        )
+            .andExpect(status().isBadRequest());
+
     }
 
     @Test
@@ -119,7 +134,7 @@ public class ProductControllerTest {
 
 
     @Test
-    public void update() throws Exception {
+    public void updateWithVaildAttributes() throws Exception {
         mockMvc.perform(
                         patch("/products/13")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -134,5 +149,15 @@ public class ProductControllerTest {
             .build();
 
         verify(productService).updateProduct(13L, productDto);
+    }
+
+    @Test
+    public void updateWithInvaildAttributes() throws Exception {
+        mockMvc.perform(
+                        patch("/products/13")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\",\"maker\":\"NIKE\", \"price\":0}")
+                        )
+            .andExpect(status().isBadRequest());
     }
 }

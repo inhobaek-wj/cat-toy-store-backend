@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import com.github.dozermapper.core.Mapper;
 import com.jake.cattoystore.application.ProductService;
 import com.jake.cattoystore.domain.Product;
@@ -51,7 +53,7 @@ public class ProductController {
 
     @PostMapping("/products")
     public ResponseEntity<?> create(
-                                    @RequestBody ProductDto productDto)
+                                    @Valid @RequestBody ProductDto productDto)
         throws URISyntaxException {
 
         // productService.addProduct(mapper.map(productDto, Product.class));
@@ -82,7 +84,7 @@ public class ProductController {
     @PatchMapping("/products/{id}")
     public void update(
                        @PathVariable("id") Long id,
-                       @RequestBody ProductDto productDto
+                       @Valid @RequestBody ProductDto productDto
                        ) {
         // these codes invoke error like
 
