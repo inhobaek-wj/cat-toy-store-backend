@@ -25,6 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.jake.cattoystore.application.ProductService;
 import com.jake.cattoystore.domain.Product;
 import com.jake.cattoystore.dto.ProductDto;
@@ -115,7 +117,7 @@ public class ProductControllerTest {
 
 
     @Test
-    public void detail() throws Exception {
+    public void detailWhenProductExists() throws Exception {
 
         Product product = Product.builder()
             .name("airforce")
@@ -130,6 +132,15 @@ public class ProductControllerTest {
             .andExpect(content().string(containsString("airforce")));
 
         verify(productService).getProduct(13L);
+    }
+
+    @Test
+    public void detailWhenProductNotExists() throws Exception {
+
+        given(productService.getProduct(13L)).willThrow(new EntityNotFoundException());
+
+        mockMvc.perform(get("/products/13"))
+            .andExpect(status().isNotFound());
     }
 
 
