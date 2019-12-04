@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import com.github.dozermapper.core.Mapper;
+import com.jake.cattoystore.application.UserService;
+import com.jake.cattoystore.domain.User;
+import com.jake.cattoystore.dto.UserDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +27,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private Mapper mapper;
+
     @PostMapping("/users")
-    public ResponseEntity<?> signup() throws URISyntaxException {
+    public ResponseEntity<?> signup(
+                                    @RequestBody UserDto userDto
+                                    ) throws URISyntaxException {
+
+        userService.register(mapper.map(userDto, User.class));
+
         URI location = new URI("/");
         return ResponseEntity.created(location).build();
     }

@@ -27,6 +27,9 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.jake.cattoystore.application.UserService;
+import com.jake.cattoystore.domain.User;
+
 import static org.hamcrest.CoreMatchers.containsString;
 
 // it takes a little bit long to test controller.
@@ -39,6 +42,9 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private UserService userService;
+
     @Test
     public void singup() throws Exception {
 
@@ -49,6 +55,8 @@ public class UserControllerTest {
                                  + " \"password\":\"pass\"}")
                         )
             .andExpect(status().isCreated());
+
+        verify(userService).register(any(User.class));
     }
 
 }
