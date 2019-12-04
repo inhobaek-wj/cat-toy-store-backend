@@ -42,6 +42,9 @@ public class TokenControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private UserService userService;
+
     @Test
     public void signin() throws Exception {
         mockMvc.perform(
@@ -52,6 +55,7 @@ public class TokenControllerTest {
                         )
             .andExpect(status().isCreated());
 
+        verify(userService).authenticate("tester@example.com","pass");
     }
 
 }

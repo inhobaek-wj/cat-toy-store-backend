@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import com.github.dozermapper.core.Mapper;
 import com.jake.cattoystore.application.UserService;
 import com.jake.cattoystore.domain.User;
+import com.jake.cattoystore.dto.SigninDto;
 import com.jake.cattoystore.dto.UserDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/token")
 public class TokenController {
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping
     public ResponseEntity<?> signin(
+                                    @RequestBody SigninDto signinDto
                                     ) throws URISyntaxException {
+
+
+        userService.authenticate(signinDto.getEmail(),
+                                 signinDto.getPassword());
+
         return ResponseEntity.created(new URI("/")).build();
     }
 
