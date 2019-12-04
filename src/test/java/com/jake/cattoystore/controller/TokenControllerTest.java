@@ -35,31 +35,23 @@ import static org.hamcrest.CoreMatchers.containsString;
 // it takes a little bit long to test controller.
 
 @ExtendWith(SpringExtension.class) // junit5 <- @RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
+@WebMvcTest(TokenController.class)
 @ActiveProfiles("myTest")
-public class UserControllerTest {
+public class TokenControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private UserService userService;
-
     @Test
-    public void singup() throws Exception {
-
-        mockMvc.perform(post("/users")
+    public void signin() throws Exception {
+        mockMvc.perform(
+                        post("/token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"tester\","
-                                 + "\"email\":\"tester@example.com\","
-                                 + " \"password\":\"pass\"}")
+                        .content("{\"email\":\"tester@example.com\","
+                                 + "\"password\":\"pass\"}")
                         )
             .andExpect(status().isCreated());
 
-
-
-
-        verify(userService).register(any(User.class));
     }
 
 }
