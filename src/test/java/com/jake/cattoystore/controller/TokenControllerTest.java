@@ -45,8 +45,23 @@ public class TokenControllerTest {
     @MockBean
     private UserService userService;
 
+    public void setUp() {
+        User user = User.builder()
+            .email("tester@example.com")
+            .name("tester")
+            .password("pass")
+            .build();
+
+        given(userService.authenticate("tester@example.com", "test"))
+            .willReturn(user);
+
+        given(userService.authenticate("x@example.com", "x"))
+            .willReturn(null);
+
+    }
+
     @Test
-    public void signin() throws Exception {
+    public void signinWithValidAttributes() throws Exception {
         mockMvc.perform(
                         post("/token")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -58,4 +73,15 @@ public class TokenControllerTest {
         verify(userService).authenticate("tester@example.com","pass");
     }
 
+    @Test
+    public void signinWithInvalidAttributes() throws Exception {
+        mockMvc.perform(
+                        post("/token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"x@example.com\","
+                                 + "\"password\":\"x\"}")
+                        )
+            .andExpect(status().isNotFound()); // this needs EntityNotFoundException
+
+    }
 }

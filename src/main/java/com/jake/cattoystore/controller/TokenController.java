@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import com.github.dozermapper.core.Mapper;
@@ -39,8 +40,12 @@ public class TokenController {
                                     ) throws URISyntaxException {
 
 
-        userService.authenticate(signinDto.getEmail(),
-                                 signinDto.getPassword());
+        User user = userService.authenticate(signinDto.getEmail(),
+                                             signinDto.getPassword());
+
+        if (user == null) {
+            throw new EntityNotFoundException();
+        }
 
         return ResponseEntity.created(new URI("/")).build();
     }
