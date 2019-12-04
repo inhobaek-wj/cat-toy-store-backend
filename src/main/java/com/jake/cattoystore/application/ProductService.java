@@ -39,6 +39,10 @@ public class ProductService {
     }
 
     public Product updateProduct(Long id, ProductDto productDto) {
-        return null;
+        Product product = productRepository.findById(id).get();
+
+        product.updateWithDto(productDto);
+
+        return product;
     }
 }

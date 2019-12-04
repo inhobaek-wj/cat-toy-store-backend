@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.jake.cattoystore.dto.ProductDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,4 +50,11 @@ public class Product {
     public void changeImageUrl(String newImageUrl) {
         this.imageUrl = newImageUrl;
     }
+
+    public void updateWithDto(ProductDto productDto) {
+        this.name = productDto.getName();
+        this.maker = productDto.getMaker();
+        this.price = productDto.getPrice();
+    }
+
 }

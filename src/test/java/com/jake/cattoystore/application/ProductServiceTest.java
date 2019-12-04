@@ -17,6 +17,7 @@ import java.util.Optional;
 import com.jake.cattoystore.application.ProductService;
 import com.jake.cattoystore.domain.Product;
 import com.jake.cattoystore.domain.ProductRepository;
+import com.jake.cattoystore.dto.ProductDto;
 
 public class ProductServiceTest {
 
@@ -96,4 +97,23 @@ public class ProductServiceTest {
         verify(productRepository).findById(13L);
     }
 
+    @Test
+    public void updateProduct() {
+        Product product = Product.builder().build();
+
+        given(productRepository.findById(13L))
+            .willReturn(Optional.of(product));
+
+        ProductDto productDto = ProductDto.builder()
+            .name("airforce")
+            .maker("NIKE")
+            .price(50000)
+            .build();
+
+        productService.updateProduct(13L, productDto);
+
+        verify(productRepository).findById(13L);
+
+        assertThat(product.getName()).isEqualTo("airforce");
+    }
 }
