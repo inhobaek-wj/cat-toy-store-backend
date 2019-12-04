@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import com.jake.cattoystore.domain.User;
@@ -33,7 +34,10 @@ public class UserService {
     }
 
     public User authenticate(String email, String password) {
-        return null;
+        User user = this.userRepository.findByEmail(email)
+            .orElseThrow(() -> new EntityNotFoundException());
+
+        return user;
     }
 
 

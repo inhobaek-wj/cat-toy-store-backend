@@ -53,4 +53,20 @@ public class UserServiceTest {
 
         verify(userRepository).save(user);
     }
+
+    @Test
+    public void authenticateWithValidAttributes() {
+        User mockUser = User.builder()
+            .name("tester")
+            .email("tester@example.com")
+            .build();
+
+        given(userRepository.findByEmail("tester@example.com"))
+            .willReturn(Optional.of(mockUser));
+
+        User user = userService.authenticate("tester@example.com", "pass");
+
+        assertThat(user).isNotNull();
+
+    }
 }
