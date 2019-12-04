@@ -8,14 +8,13 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtUtil {
 
-    private String secret;
+    private Key key;
 
     public JwtUtil(String secret) {
-        this.secret = secret;
+        Key key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String createToken(Long userId, String name) {
-        Key key = Keys.hmacShaKeyFor(secret.getBytes());
 
         String token = Jwts.builder()
             .claim("userId", userId)
