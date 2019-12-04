@@ -2,6 +2,7 @@ package com.jake.cattoystore.util;
 
 import java.security.Key;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -11,7 +12,7 @@ public class JwtUtil {
     private Key key;
 
     public JwtUtil(String secret) {
-        Key key = Keys.hmacShaKeyFor(secret.getBytes());
+        key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String createToken(Long userId, String name) {
@@ -23,5 +24,14 @@ public class JwtUtil {
             .compact();
 
         return token;
+    }
+
+    public Claims parseToken(String token) {
+        Claims claims = Jwts.parser()
+            .setSigningKey(key)
+            .parseClaimsJws(token)
+            .getBody();
+
+        return claims;
     }
 }
