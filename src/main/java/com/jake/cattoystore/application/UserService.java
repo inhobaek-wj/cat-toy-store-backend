@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.jake.cattoystore.domain.User;
+import com.jake.cattoystore.domain.UserRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,14 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class UserService {
 
-    public void register(User user) {
+    private UserRepository userRepository;
 
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User register(User user) {
+        return this.userRepository.save(user);
     }
 
 
