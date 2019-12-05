@@ -51,6 +51,7 @@ public class UserServiceTest {
         User mockUser = User.builder()
             .name("tester")
             .email("tester@example.com")
+            .password(passwordEncoder.encode("pass"))
             .build();
 
         given(userRepository.findByEmail("tester@example.com"))
@@ -93,4 +94,12 @@ public class UserServiceTest {
                      () -> userService.authenticate("x@example.com", "x"));
 
     }
+
+    @Test
+    public void authenticateWithWrongPassword() {
+        User user = userService.authenticate("tester@example.com", "x");
+
+        assertThat(user).isNull();
+    }
+
 }
