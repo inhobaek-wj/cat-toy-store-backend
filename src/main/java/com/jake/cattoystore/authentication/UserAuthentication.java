@@ -30,4 +30,9 @@ public class UserAuthentication extends AbstractAuthenticationToken {
     public String getName() {
         return claims.get("name", String.class);
     }
+
+    @Override
+    public boolean isAuthenticated() {
+        return true;
+    }
 }

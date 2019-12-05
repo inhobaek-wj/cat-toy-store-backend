@@ -40,6 +40,10 @@ import static org.hamcrest.CoreMatchers.containsString;
 @ActiveProfiles("test")
 public class ProductControllerTest {
 
+    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+        + "eyJ1c2VySWQiOjEzLCJuYW1lIjoidGVzdGVyIn0."
+        + "s7-SwQW2LsfmFjEQGQbsJciJB1R7rvoDGvpRXpfFJJA";
+
     // MockMvc object is injected by Spring IoC Container.
     @Autowired
     private MockMvc mockMvc;
@@ -69,6 +73,16 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void createWithoutAuthentication() throws Exception {
+        mockMvc.perform(
+                        post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"airforce\",\"maker\":\"NIKE\", \"price\":50000}")
+                        )
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void createWithValidAttributes() throws Exception {
         // mockMvc.perform(post("/products"))
         //     .andExpect(status().isCreated());
@@ -79,6 +93,7 @@ public class ProductControllerTest {
 
         mockMvc.perform(
                         post("/products")
+                        .header("Authorization", "Bearer " + TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"airforce\",\"maker\":\"NIKE\", \"price\":50000}")
                         )
@@ -99,6 +114,7 @@ public class ProductControllerTest {
 
         mockMvc.perform(
                         post("/products")
+                        // .header("Authorization", "Bearer " + TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\" \",\"maker\":\"NIKE\", \"price\":50000}")
                         )
