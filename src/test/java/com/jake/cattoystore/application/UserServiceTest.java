@@ -1,5 +1,6 @@
 package com.jake.cattoystore.application;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -33,13 +34,28 @@ public class UserServiceTest {
 
     private PasswordEncoder passwordEncoder;
 
+
+    // JUnit Jupiter does not guarantee the execution order of multiple @BeforeEach methods that are declared within a single test class or test interface.
+    // While it may at times appear that these methods are invoked in alphabetical order, they are in fact sorted using an algorithm that is deterministic but intentionally non-obvious.
     @BeforeEach
-    public void setUp() {
+    public void aSetUp() {
         MockitoAnnotations.initMocks(this);
         passwordEncoder = new BCryptPasswordEncoder();
 
         userService = new UserService(userRepository,
                                       passwordEncoder);
+    }
+
+    @BeforeEach
+    public void mockUserRepository() {
+        User mockUser = User.builder()
+            .name("tester")
+            .email("tester@example.com")
+            .build();
+
+        given(userRepository.findByEmail("tester@example.com"))
+            .willReturn(Optional.of(mockUser));
+
     }
 
     @Test
@@ -59,13 +75,6 @@ public class UserServiceTest {
 
     @Test
     public void authenticateWithValidAttributes() {
-        User mockUser = User.builder()
-            .name("tester")
-            .email("tester@example.com")
-            .build();
-
-        given(userRepository.findByEmail("tester@example.com"))
-            .willReturn(Optional.of(mockUser));
 
         User user = userService.authenticate("tester@example.com", "pass");
 
