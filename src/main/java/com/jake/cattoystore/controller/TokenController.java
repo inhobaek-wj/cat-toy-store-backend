@@ -12,8 +12,10 @@ import javax.validation.Valid;
 import com.github.dozermapper.core.Mapper;
 import com.jake.cattoystore.application.UserService;
 import com.jake.cattoystore.domain.User;
-import com.jake.cattoystore.dto.SigninDto;
+import com.jake.cattoystore.dto.SigninRequestDto;
+import com.jake.cattoystore.dto.SigninResponseDto;
 import com.jake.cattoystore.dto.UserDto;
+import com.jake.cattoystore.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,20 +36,30 @@ public class TokenController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private Mapper mapper;
+
     @PostMapping
     public ResponseEntity<?> signin(
-                                    @Valid @RequestBody SigninDto signinDto
+                                    @Valid @RequestBody SigninRequestDto signinRequestDto
                                     ) throws URISyntaxException {
 
 
-        User user = userService.authenticate(signinDto.getEmail(),
-                                             signinDto.getPassword());
+        User user = userService.authenticate(signinRequestDto.getEmail(),
+                                             signinRequestDto.getPassword());
 
         if (user == null) {
             throw new EntityNotFoundException();
         }
 
-        return ResponseEntity.created(new URI("/")).build();
+        UserDto userDto = mapper.map(user, UserDto.class);
+
+        String token = jwtUtil.createToken(userDto.getId(), userDto.getName());
+
+        return ResponseEntity.created(new URI("/")).body(new SigninResponseDto(token));
     }
 
 }

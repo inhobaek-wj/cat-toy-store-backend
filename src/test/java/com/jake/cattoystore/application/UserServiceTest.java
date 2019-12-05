@@ -54,6 +54,9 @@ public class UserServiceTest {
             .password(passwordEncoder.encode("pass"))
             .build();
 
+        // this code not work.
+        // given(userRepository.save(any())).willReturn(Optional.of(mockUser));
+
         given(userRepository.findByEmail("tester@example.com"))
             .willReturn(Optional.of(mockUser));
 
@@ -61,15 +64,20 @@ public class UserServiceTest {
 
     @Test
     public void register() {
+        //Given.
         User user = User.builder()
             .name("tester")
             .email("tester@example.com")
             .password("pass")
             .build();
 
+        // When.
         userService.register(user);
+        // User user = userService.register(any());         // this code not work.
 
-        assertThat(user.getPassword()).isNotEqualTo("pass");
+        // Then.
+        // assertThat(user.getPassword()).isNotEqualTo("pass"); // remove @Getter of password.
+        assertThat(user.matchesPassword(passwordEncoder, "pass")).isEqualTo(true);
 
         verify(userRepository).save(user);
     }

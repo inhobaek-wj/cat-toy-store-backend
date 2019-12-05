@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserDto {
 
+    @Mapping("id")
+    private Long id;
+
     @Mapping("name")
     private String name;
 

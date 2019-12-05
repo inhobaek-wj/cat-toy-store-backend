@@ -45,14 +45,15 @@ public class TokenControllerTest {
     @MockBean
     private UserService userService;
 
+    @BeforeEach
     public void setUp() {
         User user = User.builder()
             .email("tester@example.com")
             .name("tester")
-            .password("pass")
+            // .password("pass")
             .build();
 
-        given(userService.authenticate("tester@example.com", "test"))
+        given(userService.authenticate("tester@example.com", "pass"))
             .willReturn(user);
 
         given(userService.authenticate("x@example.com", "x"))
@@ -62,13 +63,16 @@ public class TokenControllerTest {
 
     @Test
     public void signinWithValidAttributes() throws Exception {
+
         mockMvc.perform(
                         post("/token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"tester@example.com\","
                                  + "\"password\":\"pass\"}")
                         )
-            .andExpect(status().isCreated());
+            .andExpect(status().isCreated())
+            .andExpect(content().string(containsString("accessToken")))
+            .andExpect(content().string(containsString(".")));
 
         verify(userService).authenticate("tester@example.com","pass");
     }
