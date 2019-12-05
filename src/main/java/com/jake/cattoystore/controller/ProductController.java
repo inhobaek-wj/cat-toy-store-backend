@@ -51,7 +51,7 @@ public class ProductController {
             .collect(Collectors.toList());
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     @PostMapping("/products")
     public ResponseEntity<?> create(
                                     @Valid @RequestBody ProductDto productDto)

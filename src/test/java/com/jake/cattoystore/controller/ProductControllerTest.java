@@ -40,9 +40,13 @@ import static org.hamcrest.CoreMatchers.containsString;
 @ActiveProfiles("test")
 public class ProductControllerTest {
 
-    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+    private static final String TESTER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
         + "eyJ1c2VySWQiOjEzLCJuYW1lIjoidGVzdGVyIn0."
         + "s7-SwQW2LsfmFjEQGQbsJciJB1R7rvoDGvpRXpfFJJA";
+
+    private static final String ADMIN_TOKEN = "eyJhbGciOiJIUzI1NiJ9." +
+        "eyJ1c2VySWQiOjEsIm5hbWUiOiLqtIDrpqzsnpAifQ." +
+        "EyrTP4OAGH9fA7lYxHrmJibf9QpBZnijtet-bWiTu2k";
 
     // MockMvc object is injected by Spring IoC Container.
     @Autowired
@@ -73,7 +77,19 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void createWithoutAuthentication() throws Exception {
+    public void createWithoutAdminRole() throws Exception {
+        mockMvc.perform(
+                        post("/products")
+                        .header("Authorization", "Bearer " + TESTER_TOKEN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"airforce\",\"maker\":\"NIKE\", \"price\":50000}")
+                        )
+            .andExpect(status().isForbidden());
+
+    }
+
+    @Test
+    public void createWithoutAnyAuthentication() throws Exception {
         mockMvc.perform(
                         post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -84,7 +100,7 @@ public class ProductControllerTest {
 
     @Test
     public void createWithValidAttributes() throws Exception {
-        // mockMvc.perform(post("/products"))
+        // mockmvc.perform(post("/products"))
         //     .andExpect(status().isCreated());
 
         Product product = Product.builder().id(13L).build();
@@ -93,7 +109,7 @@ public class ProductControllerTest {
 
         mockMvc.perform(
                         post("/products")
-                        .header("Authorization", "Bearer " + TOKEN)
+                        .header("Authorization", "Bearer " + ADMIN_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"airforce\",\"maker\":\"NIKE\", \"price\":50000}")
                         )
