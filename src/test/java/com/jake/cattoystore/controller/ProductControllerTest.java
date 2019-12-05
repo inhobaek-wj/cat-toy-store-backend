@@ -37,7 +37,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 @ExtendWith(SpringExtension.class) // junit5 <- @RunWith(SpringRunner.class)
 @WebMvcTest(ProductController.class)
-@ActiveProfiles("myTest")
+@ActiveProfiles("test")
 public class ProductControllerTest {
 
     // MockMvc object is injected by Spring IoC Container.

@@ -36,7 +36,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 @ExtendWith(SpringExtension.class) // junit5 <- @RunWith(SpringRunner.class)
 @WebMvcTest(TokenController.class)
-@ActiveProfiles("myTest")
+@ActiveProfiles("test")
 public class TokenControllerTest {
 
     @Autowired
