@@ -84,4 +84,14 @@ public class TokenControllerTest {
             .andExpect(status().isNotFound()); // this needs EntityNotFoundException
 
     }
+
+    @Test
+    public void signinWithNoPassword() throws Exception {
+        mockMvc.perform(
+                        post("/token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+            .andExpect(status().isBadRequest());
+    }
+
 }

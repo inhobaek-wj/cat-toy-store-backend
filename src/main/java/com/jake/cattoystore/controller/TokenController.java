@@ -36,7 +36,7 @@ public class TokenController {
 
     @PostMapping
     public ResponseEntity<?> signin(
-                                    @RequestBody SigninDto signinDto
+                                    @Valid @RequestBody SigninDto signinDto
                                     ) throws URISyntaxException {
 
 
