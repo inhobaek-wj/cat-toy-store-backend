@@ -26,6 +26,10 @@ import static org.hamcrest.CoreMatchers.containsString;
 @ActiveProfiles("test")
 public class GreetingControllerTest {
 
+    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+        + "eyJ1c2VySWQiOjEzLCJuYW1lIjoidGVzdGVyIn0."
+        + "s7-SwQW2LsfmFjEQGQbsJciJB1R7rvoDGvpRXpfFJJA";
+
     // MockMvc object is injected by Spring IoC Container.
     @Autowired
     private MockMvc mockMvc;
@@ -58,5 +62,16 @@ public class GreetingControllerTest {
             .andExpect(content().string(containsString("Hello, jake")));
 
         verify(greetingService).getMessage("jake");
+    }
+
+    @Test
+    public void helloWithJWT() throws Exception {
+        mockMvc.perform(
+                        get("/hello")
+                        .header("Authorization", "Bearer " + TOKEN)
+                        )
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("\"name\":\"tester\"")))
+            .andExpect(content().string(containsString("Hello")));
     }
 }
