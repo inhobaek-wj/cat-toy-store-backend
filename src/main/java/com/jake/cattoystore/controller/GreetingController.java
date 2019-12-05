@@ -25,8 +25,10 @@ public class GreetingController {
         String myName = "jake";
 
         if (authentication != null) {
-            Claims claims = (Claims) authentication.getPrincipal();
-            myName = claims.get("name", String.class);
+            // Claims claims = (Claims) authentication.getPrincipal();
+            // myName = claims.get("name", String.class);
+
+            myName = authentication.getName();
         }
 
         GreetingDto greetingDto = new GreetingDto();

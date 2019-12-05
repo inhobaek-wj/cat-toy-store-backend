@@ -63,7 +63,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         Claims claims = jwtUtil.parseToken(token);
 
         // create authentication object.
-        Authentication authentication = new UsernamePasswordAuthenticationToken(claims, null);
+        // Authentication authentication = new UsernamePasswordAuthenticationToken(claims, null);
+        Authentication authentication =
+            new UserAuthentication(claims); // use custom Authentication object.
 
         return authentication;
 
