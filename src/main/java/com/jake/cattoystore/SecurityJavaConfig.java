@@ -1,5 +1,8 @@
 package com.jake.cattoystore;
 
+import javax.servlet.Filter;
+
+import com.jake.cattoystore.authentication.JwtAuthenticationFilter;
 import com.jake.cattoystore.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,11 +34,16 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // filter for user authentication.
+        Filter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(),
+                                                                     jwtUtil());
+
         http.cors().disable()
             .csrf().disable()
             .formLogin().disable()
             .headers().frameOptions().disable()
             .and()
+            .addFilter(jwtAuthenticationFilter)
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
