@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
@@ -29,6 +30,10 @@ public class UserService {
     }
 
     public User register(User user) {
+
+        this.userRepository.findByEmail(user.getEmail())
+            .ifPresent((existedUser) -> {throw new EntityExistsException();});
+
         user.hashPassword(this.passwordEncoder);
         return this.userRepository.save(user);
     }

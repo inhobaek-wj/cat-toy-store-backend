@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.jake.cattoystore.domain.User;
@@ -54,7 +56,7 @@ public class UserServiceTest {
             .password(passwordEncoder.encode("pass"))
             .build();
 
-        // this code not work.
+        // this code not work. I tried to use any()...
         // given(userRepository.save(any())).willReturn(Optional.of(mockUser));
 
         given(userRepository.findByEmail("tester@example.com"))
@@ -66,8 +68,8 @@ public class UserServiceTest {
     public void register() {
         //Given.
         User user = User.builder()
-            .name("tester")
-            .email("tester@example.com")
+            .name("newUser")
+            .email("newUser@example.com")
             .password("pass")
             .build();
 
@@ -83,6 +85,23 @@ public class UserServiceTest {
     }
 
     @Test
+    public void registerWithDuplicatedEmail() {
+        //Given.
+        User user = User.builder()
+            .name("tester")
+            .email("tester@example.com")
+            .password("pass")
+            .build();
+
+        // use mockUser at BeforeEach.
+
+        // Then.
+        assertThrows(EntityExistsException.class,
+                     () -> userService.register(user));
+
+    }
+
+    @Test
     public void authenticateWithValidAttributes() {
 
         User user = userService.authenticate("tester@example.com", "pass");
@@ -94,13 +113,13 @@ public class UserServiceTest {
     // @Test(expected = EntityNotFoundException.class) <- junit 4.
     @Test
     public void authenticateWithNotExistedEmail() {
-        given(userRepository.findByEmail("x@example.com"))
-            .willThrow(new EntityNotFoundException());
+        // this is junit 4.
+        // given(userRepository.findByEmail("x@example.com"))
+        //     .willThrow(new EntityNotFoundException());
 
         // this is junit 5.
         assertThrows(EntityNotFoundException.class,
                      () -> userService.authenticate("x@example.com", "x"));
-
     }
 
     @Test

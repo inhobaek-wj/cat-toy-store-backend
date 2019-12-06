@@ -85,7 +85,8 @@ public class TokenControllerTest {
                         .content("{\"email\":\"x@example.com\","
                                  + "\"password\":\"x\"}")
                         )
-            .andExpect(status().isNotFound()); // this needs EntityNotFoundException
+            // this needs EntityNotFoundException & handling it in advice.
+            .andExpect(status().isNotFound());
 
     }
 

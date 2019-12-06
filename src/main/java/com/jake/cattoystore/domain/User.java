@@ -1,10 +1,13 @@
 package com.jake.cattoystore.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.UniqueConstraint;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +28,8 @@ public class User {
 
     private String name;
 
+    @Column(name = "email", unique = true)
+    @Getter
     private String email;
 
     private String password;
