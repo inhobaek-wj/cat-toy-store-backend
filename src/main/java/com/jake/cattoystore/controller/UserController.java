@@ -30,15 +30,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private Mapper mapper;
+    // @Autowired
+    // private Mapper mapper;
 
     @PostMapping("/users")
     public ResponseEntity<?> signup(
                                     @RequestBody UserDto userDto
                                     ) throws URISyntaxException {
 
-        userService.register(mapper.map(userDto, User.class));
+        // userService.register(mapper.map(userDto, User.class));
+        userService.register(userDto);
 
         URI location = new URI("/");
         return ResponseEntity.created(location).build();

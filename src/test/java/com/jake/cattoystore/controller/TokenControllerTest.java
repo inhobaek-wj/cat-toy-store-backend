@@ -29,6 +29,7 @@ import javax.persistence.EntityNotFoundException;
 
 import com.jake.cattoystore.application.UserService;
 import com.jake.cattoystore.domain.User;
+import com.jake.cattoystore.dto.SigninRequestDto;
 
 import static org.hamcrest.CoreMatchers.containsString;
 
@@ -57,7 +58,8 @@ public class TokenControllerTest {
             .willReturn(user);
 
         given(userService.authenticate("x@example.com", "x"))
-            .willReturn(null);
+            // .willReturn(null);
+            .willThrow(EntityNotFoundException.class);
 
     }
 
@@ -74,11 +76,12 @@ public class TokenControllerTest {
             .andExpect(content().string(containsString("accessToken")))
             .andExpect(content().string(containsString(".")));
 
-        verify(userService).authenticate("tester@example.com","pass");
+        // verify(userService).authenticate("tester@example.com","pass");
     }
 
     @Test
     public void signinWithInvalidAttributes() throws Exception {
+
         mockMvc.perform(
                         post("/token")
                         .contentType(MediaType.APPLICATION_JSON)

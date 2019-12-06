@@ -47,13 +47,13 @@ public class TokenController {
                                     @Valid @RequestBody SigninRequestDto signinRequestDto
                                     ) throws URISyntaxException {
 
-
         User user = userService.authenticate(signinRequestDto.getEmail(),
                                              signinRequestDto.getPassword());
 
-        if (user == null) {
-            throw new EntityNotFoundException();
-        }
+        // throwing errors is only in service.
+        // if (user == null) {
+        //     throw new EntityNotFoundException();
+        // }
 
         UserDto userDto = mapper.map(user, UserDto.class);
 

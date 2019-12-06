@@ -25,10 +25,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import com.jake.cattoystore.application.UserService;
 import com.jake.cattoystore.domain.User;
+import com.jake.cattoystore.dto.UserDto;
 
 import static org.hamcrest.CoreMatchers.containsString;
 
@@ -56,10 +58,28 @@ public class UserControllerTest {
                         )
             .andExpect(status().isCreated());
 
-
-
-
-        verify(userService).register(any(User.class));
+        verify(userService).register(any(UserDto.class));
     }
 
+    @Test
+    public void signupWithExitedEmail() throws Exception {
+
+        UserDto userDto = UserDto.builder()
+            .email("existedUser@example.com")
+            .name("existedUser")
+            .password("pass")
+            .build();
+
+        given(userService.register(userDto))
+            .willThrow(EntityExistsException.class);
+
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"existedUser\","
+                                 + "\"email\":\"existedUser@example.com\","
+                                 + " \"password\":\"pass\"}")
+                        )
+            .andExpect(status().isBadRequest());
+
+    }
 }

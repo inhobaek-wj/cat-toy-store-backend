@@ -1,5 +1,6 @@
 package com.jake.cattoystore.advice;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,13 @@ public class ControllerErrorAdvice {
 
     @ResponseBody
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> handleNotFounc() {
+    public ResponseEntity<?> handleNotFound() {
         return ResponseEntity.notFound().build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<?> handleExistedEntity() {
+        return ResponseEntity.badRequest().build();
     }
 }
